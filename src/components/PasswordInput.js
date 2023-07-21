@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-function PasswordInput({ label, labelText, name, register, errors, customValidateParams }) {
+function PasswordInput({label, labelText, name, register, errors, customValidateParams}) {
     const [passwordStrength, setPasswordStrength] = useState("");
 
     useEffect(() => {
@@ -31,12 +31,14 @@ function PasswordInput({ label, labelText, name, register, errors, customValidat
             message: 'Dit veld is verplicht',
         },
         validate: {
-            matchPattern: [
-                (v) => /(?=.{10,})/.test(v) || "The password is at least 8 characters long",
-                (v) => /(?=.*[A-Z])+$/.test(v) || "The password has at least one uppercase letter",
-                (v) => /(?=.*[a-z])+$/.test(v) || "The password has at least one lowercase letter",
-                (v) => /(?=.*[0-9])+$/.test(v) || "The password has at least one digit",
-                (v) => /[^A-Za-z0-9]+$/.test(v) || "The password has at least one special character"]
+            matchPattern: (v) => {
+                if (!/(?=.{10,})/.test(v)) return "Make sure the password is at least 10 characters long";
+                if (!/(?=.*[A-Z])/.test(v)) return "Make sure the password has at least one uppercase letter";
+                if (!/(?=.*[a-z])/.test(v)) return "Make sure the password has at least one lowercase letter";
+                if (!/(?=.*[0-9])/.test(v)) return "Make sure the password has at least one digit";
+                if (!/[^A-Za-z0-9]/.test(v)) return "Make sure the password has at least one special character";
+                return true;
+            }
         }
     };
 
@@ -48,7 +50,7 @@ function PasswordInput({ label, labelText, name, register, errors, customValidat
         <>
             <label htmlFor={label}>{labelText}</label>
             <input
-                type="text"
+                type="password"
                 id={label}
                 {...register(name, validationParams)}
                 onChange={handleInputChange}
