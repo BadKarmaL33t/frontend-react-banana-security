@@ -12,11 +12,11 @@ function PasswordInput({ label, labelText, name, register, errors }) {
         const mediumRegex = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{10,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/;
 
         if (strongRegex.test(v)) {
-            return "Strong";
+            return "Sterk";
         } else if (mediumRegex.test(v)) {
-            return "Medium";
+            return "Gemiddeld";
         } else {
-            return "Weak";
+            return "Zwak";
         }
     }
 
@@ -41,13 +41,14 @@ function PasswordInput({ label, labelText, name, register, errors }) {
 
     return (
         <>
-            <label htmlFor={label}>{labelText}   <span className="strengthCheck">{passwordStrength}</span></label>
+            <label htmlFor={label}>{labelText}</label>
             <input
                 type="password"
                 id={label}
                 {...register(name, validationParams)}
                 onChange={handleInputChange}
             />
+            <p className="strengthCheck">{passwordStrength && <span>{`${passwordStrength} wachtwoord`}</span>}</p>
             {errors[name] && <small>{errors[name].message}</small>}
         </>
     )
