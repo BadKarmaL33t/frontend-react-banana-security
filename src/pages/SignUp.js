@@ -5,7 +5,7 @@ import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 
 function SignUp() {
-    const {handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onChange'});
+    const {handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
 
     function handleFormSubmit(data) {
         console.log(data);
@@ -51,7 +51,7 @@ function SignUp() {
                     register={register}
                     errors={errors}
                     customValidateParams={{
-                        matchPattern: (v) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || "dit veld mag geen cijfers bevatten",
+                        matchPattern: (v) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || "dit is geen geldig email adres",
                     }}
                 />
                 <PasswordInput

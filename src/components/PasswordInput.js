@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
-function PasswordInput({label, labelText, name, register, errors, customValidateParams}) {
+function PasswordInput({ label, labelText, name, register, errors }) {
     const [passwordStrength, setPasswordStrength] = useState("");
 
     useEffect(() => {
@@ -12,11 +12,11 @@ function PasswordInput({label, labelText, name, register, errors, customValidate
         const mediumRegex = /((?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^A-Za-z0-9])(?=.{10,}))|((?=.*[a-z])(?=.*[A-Z])(?=.*[^A-Za-z0-9])(?=.{8,}))/;
 
         if (strongRegex.test(v)) {
-            return 'Strong';
+            return "Strong";
         } else if (mediumRegex.test(v)) {
-            return 'Medium';
+            return "Medium";
         } else {
-            return 'Weak';
+            return "Weak";
         }
     }
 
@@ -31,34 +31,26 @@ function PasswordInput({label, labelText, name, register, errors, customValidate
             message: 'Dit veld is verplicht',
         },
         validate: {
-            matchPattern: (v) => {
-                if (!/(?=.{10,})/.test(v)) return "Make sure the password is at least 10 characters long";
-                if (!/(?=.*[A-Z])/.test(v)) return "Make sure the password has at least one uppercase letter";
-                if (!/(?=.*[a-z])/.test(v)) return "Make sure the password has at least one lowercase letter";
-                if (!/(?=.*[0-9])/.test(v)) return "Make sure the password has at least one digit";
-                if (!/[^A-Za-z0-9]/.test(v)) return "Make sure the password has at least one special character";
-                return true;
-            }
+            matchPattern: (v) => /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[^A-Za-z0-9]).{10,}$/.test(v) || "Password should be at least 10 characters long,\n" +
+                "and have at least one uppercase letter,\n" +
+                "one lowercase letter,\n" +
+                "one digit,\n" +
+                "and one special character"
         }
-    };
-
-    if (customValidateParams) {
-        validationParams.validate = customValidateParams;
     }
 
     return (
         <>
-            <label htmlFor={label}>{labelText}</label>
+            <label htmlFor={label}>{labelText}   <span className="strengthCheck">{passwordStrength}</span></label>
             <input
                 type="password"
                 id={label}
                 {...register(name, validationParams)}
                 onChange={handleInputChange}
             />
-            <span id="strengthDisp" className="badge badge__displayBadge">{passwordStrength}</span>
             {errors[name] && <small>{errors[name].message}</small>}
         </>
-    );
+    )
 }
 
 export default PasswordInput;
