@@ -6,11 +6,11 @@ import PasswordInput from "../components/PasswordInput";
 import {useForm} from "react-hook-form";
 
 function SignIn() {
-    const authContext = useContext(AuthContext); // Gebruik de useContext-hook om de context uit te lezen
-    const { formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
+    const { signIn } = useContext(AuthContext);
+    const { handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
 
-    const signInHandler = () => {
-        authContext.signIn();
+    const signInHandler = (data) => {
+        signIn(data.email);
     };
 
     return (
@@ -19,7 +19,7 @@ function SignIn() {
             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab alias cum debitis dolor dolore fuga id
                 molestias qui quo unde?</p>
 
-            <form>
+            <form onSubmit={handleSubmit(signInHandler)}>
                 <TextInput
                     label="email-field"
                     labelText="Email:"

@@ -35,7 +35,7 @@ function SignUp() {
                 <TextInput
                     label="lastname-field"
                     labelText="Achternaam:"
-                    name="lasttName"
+                    name="lastName"
                     register={register}
                     errors={errors}
                     customValidateParams={{

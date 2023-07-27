@@ -1,27 +1,30 @@
 import React, {createContext, useState} from 'react';
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
 export const AuthContext = createContext(null);
 
-function AuthContextProvider({ children }) {
-    const [isAuth, setIsAuth] = useState(false);
+function AuthContextProvider({children}) {
+    const [isAuth, setIsAuth] = useState({isAuth: false, user: ""});
     const navigate = useNavigate();
 
-    function signIn() {
-        setIsAuth(true)
-        console.log("Gebruiker is ingelogd!")
+    function signIn(email) {
+        setIsAuth({isAuth: true, user: email.value})
+        console.log(`Gebruiker is ingelogd!`)
         navigate('/profile')
     }
 
     function signOut() {
-        setIsAuth(false)
-        console.log("Gebruiker is uitgelogd!")
+        setIsAuth({isAuth: false, user: ""})
+        console.log(`Gebruiker is uitgelogd!`)
         navigate('/')
     }
 
     return (
         <AuthContext.Provider value={{
-            isAuth, signIn, signOut
+            isAuth: isAuth.isAuth, // Accessing the isAuth property correctly
+            user: isAuth.user, // Accessing the user property correctly
+            signIn,
+            signOut
         }}
         >
             {children}
