@@ -4,14 +4,24 @@ import {AuthContext} from "../context/AuthContext";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 import {useForm} from "react-hook-form";
+import axios from "axios";
 
 function SignIn() {
     const { signIn } = useContext(AuthContext);
     const { handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
 
-    const signInHandler = (data) => {
-        signIn(data.email);
-    };
+    async function signInHandler(data) {
+        try {
+            await axios.post('http://localhost:3000/login', {
+                email: data.email,
+                password: data.password,
+            });
+            console.log(data);
+            signIn(data);
+        } catch (error) {
+            console.error(error);
+        }
+    }
 
     return (
         <>
@@ -41,7 +51,6 @@ function SignIn() {
                     type="submit"
                     id="sign-in-button"
                     // disabled={!isDirty || !isValid}
-                    onClick={signInHandler}
                 >
                     Inloggen
                 </button>

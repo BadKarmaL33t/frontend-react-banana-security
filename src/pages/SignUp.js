@@ -1,13 +1,28 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import axios from 'axios';
+import {useNavigate, Link} from 'react-router-dom';
 import {useForm} from "react-hook-form";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 
 function SignUp() {
     const {handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
+    const navigate = useNavigate();
 
-    function handleFormSubmit(data) {
+    async function handleFormSubmit(data) {
+        try {
+            await axios.post('http://localhost:3000/register', {
+                firstName: data.firstName,
+                lastName: data.lastName,
+                email: data.email,
+                password: data.password,
+                username: data.username
+            });
+            console.log("Registration successful");
+            navigate('/signin');
+        } catch (error) {
+            console.error(error);
+        }
         console.log(data);
     }
 
@@ -28,8 +43,8 @@ function SignUp() {
                     errors={errors}
                     customValidateParams={{
                         matchPattern: (v) => /^[a-zA-Z]+$/.test(v) || "dit veld mag geen cijfers bevatten",
-                        minLength: (v) => v.length >= 2 || "vul een geldige naam in",
-                        maxLength: (v) => v.length <= 50 || "het maximale aantal karakters is bereikt",
+                        minLength: (v) => v.length >= 4 || "vul een geldige naam in",
+                        maxLength: (v) => v.length <= 25 || "het maximale aantal karakters is bereikt",
                     }}
                 />
                 <TextInput
@@ -40,6 +55,18 @@ function SignUp() {
                     errors={errors}
                     customValidateParams={{
                         matchPattern: (v) => /^[a-zA-Z]+$/.test(v) || "dit veld mag geen cijfers bevatten",
+                        minLength: (v) => v.length >= 2 || "vul een geldige naam in",
+                        maxLength: (v) => v.length <= 50 || "het maximale aantal karakters is bereikt",
+                    }}
+                />
+                <TextInput
+                    label="username-field"
+                    labelText="Gebruikersnaam:"
+                    name="username"
+                    register={register}
+                    errors={errors}
+                    customValidateParams={{
+                        matchPattern: (v) => /^[a-zA-Z]*[a-zA-Z0-9]+$/.test(v) || "dit veld mag geen cijfers bevatten",
                         minLength: (v) => v.length >= 2 || "vul een geldige naam in",
                         maxLength: (v) => v.length <= 50 || "het maximale aantal karakters is bereikt",
                     }}
