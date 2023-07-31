@@ -2,7 +2,6 @@ import React, {useContext} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
 import TextInput from "../components/TextInput";
-import PasswordInput from "../components/PasswordInput";
 import {useForm} from "react-hook-form";
 import axios from "axios";
 
@@ -40,13 +39,18 @@ function SignIn() {
                         matchPattern: (v) => /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/.test(v) || "dit is geen geldig email adres",
                     }}
                 />
-                <PasswordInput
-                    label="password-field"
-                    labelText="Wachtwoord:"
-                    name="password"
-                    register={register}
-                    errors={errors}
+                <label htmlFor="password-field"></label>
+                <input
+                    type="password"
+                    id="password-field"
+                    {...register("password", {
+                        required: {
+                            value: true,
+                            message: 'Dit veld is verplicht'
+                        }
+                    })}
                 />
+                {errors.password && <small>{errors.password.message}</small>}
                 <button
                     type="submit"
                     id="sign-in-button"
