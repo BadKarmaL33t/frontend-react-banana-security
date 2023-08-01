@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import {Link} from 'react-router-dom';
 import {AuthContext} from "../context/AuthContext";
 import TextInput from "../components/TextInput";
@@ -8,17 +8,21 @@ import axios from "axios";
 function SignIn() {
     const { signIn } = useContext(AuthContext);
     const { handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
+    const [error, toggleError] = useState(false);
 
     async function signInHandler(data) {
+        toggleError(false);
+
         try {
-            await axios.post('http://localhost:3000/login', {
+            const postSignIn = await axios.post('http://localhost:3000/login', {
                 email: data.email,
                 password: data.password,
             });
-            console.log(data);
-            signIn(data);
+            console.log(postSignIn.data);
+            signIn(postSignIn.data.accessToken); // JWT token die ik terugkrijg vanuit de console staat onder "accessToken". Deze moet worden meegegeven naar de AuthContext.
         } catch (error) {
             console.error(error);
+            toggleError(true);
         }
     }
 
@@ -51,6 +55,7 @@ function SignIn() {
                     })}
                 />
                 {errors.password && <small>{errors.password.message}</small>}
+                {error && <small className="wrong-password">De combinatie van emailadres en wachtwoord is onjuist</small>}
                 <button
                     type="submit"
                     id="sign-in-button"
