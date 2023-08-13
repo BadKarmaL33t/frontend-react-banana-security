@@ -20,7 +20,7 @@ function SignIn() {
                 password: data.password,
                 signal: controller.signal,
             });
-            console.log(postSignIn.data);
+            // console.log(postSignIn.data); > deze is niet meer nodig. Enkel gebruikt om te checken hoe de data wordt opgehaald.
             signIn(postSignIn.data.accessToken); // JWT token die ik terugkrijg vanuit de console staat onder "accessToken". Deze moet worden meegegeven naar de AuthContext.
         } catch (error) {
             console.error(error);

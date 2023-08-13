@@ -26,7 +26,7 @@ function SignUp() {
         } catch (error) {
             console.error(error);
         }
-        console.log(data);
+        // console.log(data); > Gebruikt om te checken of de data juist geregistreerd wordt.
 
         return function cleanup() {
             controller.abort();
