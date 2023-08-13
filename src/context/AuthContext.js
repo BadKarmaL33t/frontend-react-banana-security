@@ -46,10 +46,10 @@ function AuthContextProvider({children}) {
     async function getUserDetails(id, token, navUrl) {
         try {
             const userDetails = await axios.get(`http://localhost:3000/600/users/${id}`, {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    }
             });
             setIsAuth({
                 ...isAuth,

@@ -1,13 +1,15 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate, Link} from 'react-router-dom';
 import {useForm} from "react-hook-form";
 import TextInput from "../components/TextInput";
 import PasswordInput from "../components/PasswordInput";
 
+
 function SignUp() {
     const {handleSubmit, formState: {errors, isDirty, isValid}, register} = useForm({mode: 'onBlur'});
     const navigate = useNavigate();
+    const controller = new AbortController();
 
     async function handleFormSubmit(data) {
         try {
@@ -16,7 +18,8 @@ function SignUp() {
                 lastName: data.lastName,
                 email: data.email,
                 password: data.password,
-                username: data.username
+                username: data.username,
+                signal: controller.signal,
             });
             console.log("Registration successful");
             navigate('/signin');
@@ -24,6 +27,10 @@ function SignUp() {
             console.error(error);
         }
         console.log(data);
+
+        return function cleanup() {
+            controller.abort();
+        }
     }
 
     return (
