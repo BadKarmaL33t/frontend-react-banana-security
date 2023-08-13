@@ -2,6 +2,7 @@ import React, {createContext, useEffect, useState} from "react";
 import jwt_decode from "jwt-decode";
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
+import isTokenValid from "../helpers/tokenValidation";
 
 export const AuthContext = createContext({});
 
@@ -14,6 +15,18 @@ function AuthContextProvider({children}) {
 
         if (token) {
             const decoded = jwt_decode(token);
+
+            if (isTokenValid(decoded)) {
+                getUserDetails(decoded.sub, token);
+                console.log("Gebruiker is herkend en opnieuw ingelogd!");
+            } else {
+                setIsAuth({
+                    isAuth: false,
+                    user: null,
+                    status: "done"
+                });
+            }
+
             getUserDetails(decoded.sub, token);
             console.log("Gebruiker is herkend en opnieuw ingelogd!");
         } else {
