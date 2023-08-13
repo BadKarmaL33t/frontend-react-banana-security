@@ -20,7 +20,7 @@ function NavBar() {
                 {/* Toon verschillende knoppen op basis van de isAuth-status */}
                 {isAuth ?
                     <div className="user">
-                        <h5>{user}</h5>
+                        <h5>{user.email}</h5>
                         <button type="button" onClick={signOut}>
                             Uitloggen
                         </button>

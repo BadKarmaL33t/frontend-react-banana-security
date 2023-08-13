@@ -59,7 +59,7 @@ function SignIn() {
                 <button
                     type="submit"
                     id="sign-in-button"
-                    // disabled={!isDirty || !isValid}
+                    disabled={!isDirty || !isValid}
                 >
                     Inloggen
                 </button>
